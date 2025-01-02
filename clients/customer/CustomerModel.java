@@ -93,6 +93,12 @@ public class CustomerModel extends Observable
     setChanged(); notifyObservers(theAction);
   }
 
+  public void checkName( String productNum ) {
+
+
+
+  }
+
   /**
    * Clear the products from the basket
    */

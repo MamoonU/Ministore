@@ -40,13 +40,209 @@ class Main
   {
     //DEBUG.set(true); /* Lots of debug info */
     MiddleFactory mlf = new LocalMiddleFactory();  // Direct access
-    startCustomerGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf );
-    startCashierGUI_MVC( mlf ); // you can create multiple clients
-    startPackingGUI_MVC( mlf );
-    startBackDoorGUI_MVC( mlf );
+    startMenu( mlf );
   }
-  
+
+  public void startMenu(MiddleFactory mlf) {
+    JFrame menuWindow = new JFrame("Mini-Store Main Menu");
+    menuWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    menuWindow.setSize(700, 900);
+    menuWindow.setLayout(new GridLayout(5, 1));
+
+    JButton customerButton = new JButton("Catalogue Client");
+    JButton cashierButton = new JButton("Cashier Client");
+    JButton packingButton = new JButton("Packing Client");
+    JButton backDoorButton = new JButton("Manager Client");
+    JButton exitButton = new JButton("Exit");
+
+    Font buttonFont = new Font("", Font.BOLD, 30);
+    customerButton.setFont(buttonFont);
+    cashierButton.setFont(buttonFont);
+    packingButton.setFont(buttonFont);
+    backDoorButton.setFont(buttonFont);
+    exitButton.setFont(buttonFont);
+
+    customerButton.addActionListener( e -> startCustomerGUI_MVC( mlf ) );
+    cashierButton.addActionListener( e -> cashierLogIn( mlf ) );
+    packingButton.addActionListener( e -> warehouseLogIn( mlf ) );
+    backDoorButton.addActionListener( e -> managerLogIn( mlf ) );
+    exitButton.addActionListener( e -> System.exit(0));
+
+    menuWindow.add(customerButton);
+    menuWindow.add(cashierButton);
+    menuWindow.add(packingButton);
+    menuWindow.add(backDoorButton);
+    menuWindow.add(exitButton);
+
+    menuWindow.setLocationRelativeTo(null);
+    menuWindow.setVisible(true);
+  }
+
+  private void cashierLogIn(MiddleFactory mlf) {
+    JFrame logInWindow = new JFrame("Log In Page");
+    logInWindow.setSize(600, 600);
+
+    JButton logInButton = new JButton("Log In");
+    JButton cancelButton = new JButton("Cancel");
+    JLabel usernameLabel = new JLabel("Username: ");
+    JLabel passwordLabel = new JLabel("Password: ");
+    JTextField usernameField = new JTextField();
+    JPasswordField passwordField = new JPasswordField();
+
+    logInWindow.setLayout(null);
+
+    Font labelFont = new Font("", Font.BOLD, 30);
+    usernameLabel.setFont(labelFont);
+    passwordLabel.setFont(labelFont);
+
+    usernameLabel.setBounds(20, 50, 200, 50);
+    passwordLabel.setBounds(21, 160, 200, 50);
+    usernameField.setBounds(200, 60, 350, 40);
+    passwordField.setBounds(200, 170, 350, 40);
+    logInButton.setBounds(40, 450, 500, 100);
+    cancelButton.setBounds(40, 340, 500, 100);
+
+    logInButton.addActionListener( e -> {
+      String username = usernameField.getText();
+      String password = new String(passwordField.getPassword());
+
+      String validUsername = "admin";
+      String validPassword = "12345";
+
+      if(username.equals(validUsername) && password.equals(validPassword)) {
+        JOptionPane.showMessageDialog(logInWindow, "Logged in successfully!");
+        logInWindow.dispose();
+        startCashierGUI_MVC( mlf );
+      } else {
+        JOptionPane.showMessageDialog(logInWindow, "Invalid Username/Password!");
+      }
+    });
+
+    cancelButton.addActionListener( e -> {
+      logInWindow.dispose();
+    });
+
+    logInWindow.add(logInButton);
+    logInWindow.add(cancelButton);
+    logInWindow.add(usernameLabel);
+    logInWindow.add(passwordLabel);
+    logInWindow.add(usernameField);
+    logInWindow.add(passwordField);
+
+    logInWindow.setLocationRelativeTo(null);
+    logInWindow.setVisible(true);
+  }
+
+  private void warehouseLogIn(MiddleFactory mlf) {
+    JFrame logInWindow = new JFrame("Log In Page");
+    logInWindow.setSize(600, 600);
+
+    JButton logInButton = new JButton("Log In");
+    JButton cancelButton = new JButton("Cancel");
+    JLabel usernameLabel = new JLabel("Username: ");
+    JLabel passwordLabel = new JLabel("Password: ");
+    JTextField usernameField = new JTextField();
+    JPasswordField passwordField = new JPasswordField();
+
+    logInWindow.setLayout(null);
+
+    Font labelFont = new Font("", Font.BOLD, 30);
+    usernameLabel.setFont(labelFont);
+    passwordLabel.setFont(labelFont);
+
+    usernameLabel.setBounds(20, 50, 200, 50);
+    passwordLabel.setBounds(21, 160, 200, 50);
+    usernameField.setBounds(200, 60, 350, 40);
+    passwordField.setBounds(200, 170, 350, 40);
+    logInButton.setBounds(40, 450, 500, 100);
+    cancelButton.setBounds(40, 340, 500, 100);
+
+    logInButton.addActionListener( e -> {
+      String username = usernameField.getText();
+      String password = new String(passwordField.getPassword());
+
+      String validUsername = "admin";
+      String validPassword = "12345";
+
+      if(username.equals(validUsername) && password.equals(validPassword)) {
+        JOptionPane.showMessageDialog(logInWindow, "Logged in successfully!");
+        logInWindow.dispose();
+        startPackingGUI_MVC( mlf );
+      } else {
+        JOptionPane.showMessageDialog(logInWindow, "Invalid Username/Password!");
+      }
+    });
+
+    cancelButton.addActionListener( e -> {
+      logInWindow.dispose();
+    });
+
+    logInWindow.add(logInButton);
+    logInWindow.add(cancelButton);
+    logInWindow.add(usernameLabel);
+    logInWindow.add(passwordLabel);
+    logInWindow.add(usernameField);
+    logInWindow.add(passwordField);
+
+    logInWindow.setLocationRelativeTo(null);
+    logInWindow.setVisible(true);
+  }
+
+  private void managerLogIn(MiddleFactory mlf) {
+    JFrame logInWindow = new JFrame("Log In Page");
+    logInWindow.setSize(600, 600);
+
+    JButton logInButton = new JButton("Log In");
+    JButton cancelButton = new JButton("Cancel");
+    JLabel usernameLabel = new JLabel("Username: ");
+    JLabel passwordLabel = new JLabel("Password: ");
+    JTextField usernameField = new JTextField();
+    JPasswordField passwordField = new JPasswordField();
+
+    logInWindow.setLayout(null);
+
+    Font labelFont = new Font("", Font.BOLD, 30);
+    usernameLabel.setFont(labelFont);
+    passwordLabel.setFont(labelFont);
+
+    usernameLabel.setBounds(20, 50, 200, 50);
+    passwordLabel.setBounds(21, 160, 200, 50);
+    usernameField.setBounds(200, 60, 350, 40);
+    passwordField.setBounds(200, 170, 350, 40);
+    logInButton.setBounds(40, 450, 500, 100);
+    cancelButton.setBounds(40, 340, 500, 100);
+
+    logInButton.addActionListener( e -> {
+      String username = usernameField.getText();
+      String password = new String(passwordField.getPassword());
+
+      String validUsername = "admin";
+      String validPassword = "12345";
+
+      if(username.equals(validUsername) && password.equals(validPassword)) {
+        JOptionPane.showMessageDialog(logInWindow, "Logged in successfully!");
+        logInWindow.dispose();
+        startBackDoorGUI_MVC( mlf );
+      } else {
+        JOptionPane.showMessageDialog(logInWindow, "Invalid Username/Password!");
+      }
+    });
+
+    cancelButton.addActionListener( e -> {
+      logInWindow.dispose();
+    });
+
+    logInWindow.add(logInButton);
+    logInWindow.add(cancelButton);
+    logInWindow.add(usernameLabel);
+    logInWindow.add(passwordLabel);
+    logInWindow.add(usernameField);
+    logInWindow.add(passwordField);
+
+    logInWindow.setLocationRelativeTo(null);
+    logInWindow.setVisible(true);
+  }
+
   /**
   * start the Customer client, -search product
   * @param mlf A factory to create objects to access the stock list
@@ -55,7 +251,6 @@ class Main
   {
     JFrame  window = new JFrame();
     window.setTitle( "Customer Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     Dimension pos = PosOnScrn.getPos();
     
     CustomerModel model      = new CustomerModel(mlf);
@@ -75,7 +270,6 @@ class Main
   {
     JFrame  window = new JFrame();
     window.setTitle( "Cashier Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     Dimension pos = PosOnScrn.getPos();
     
     CashierModel model      = new CashierModel(mlf);
@@ -98,7 +292,6 @@ class Main
     JFrame  window = new JFrame();
 
     window.setTitle( "Packing Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     Dimension pos = PosOnScrn.getPos();
     
     PackingModel model      = new PackingModel(mlf);
@@ -119,7 +312,6 @@ class Main
     JFrame  window = new JFrame();
 
     window.setTitle( "BackDoor Client MVC");
-    window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
     Dimension pos = PosOnScrn.getPos();
     
     BackDoorModel model      = new BackDoorModel(mlf);

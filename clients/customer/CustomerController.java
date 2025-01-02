@@ -29,6 +29,10 @@ public class CustomerController
     model.doCheck(pn);
   }
 
+  public void checkName( String pname ) {
+
+  }
+
   /**
    * Clear interaction from view
    */
