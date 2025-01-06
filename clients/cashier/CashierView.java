@@ -1,6 +1,7 @@
 package clients.cashier;
 
 import catalogue.Basket;
+import clients.Style;
 import middle.MiddleFactory;
 import middle.OrderProcessing;
 import middle.StockReadWriter;
@@ -46,6 +47,11 @@ public class CashierView implements Observer
           
   public CashierView(  RootPaneContainer rpc,  MiddleFactory mf, int x, int y  )
   {
+
+    Style.styleButton(theBtCheck);
+    Style.styleButton(theBtBuy);
+    Style.styleButton(theBtBought);
+
     try                                           // 
     {      
       theStock = mf.makeStockReadWriter();        // Database access
@@ -60,10 +66,12 @@ public class CashierView implements Observer
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
 
+    cp.setBackground(Style.BACKGROUND_COLOR );
+
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
 
     pageTitle.setBounds( 110, 0 , 270, 20 );       
-    pageTitle.setText( "Thank You for Shopping at MiniStrore" );                        
+    pageTitle.setText( "Thank You for Shopping at MiniStore" );
     cp.add( pageTitle );  
     
     theBtCheck.setBounds( 16, 25+60*0, 80, 40 );    // Check Button

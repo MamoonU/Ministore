@@ -14,6 +14,8 @@ import middle.StockReader;
 
 import javax.swing.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 // There can only be 1 ResultSet opened per statement
 // so no simultaneous use of the statement object
@@ -42,10 +44,10 @@ public class StockR implements StockReader
     {
       DBAccess dbDriver = (new DBAccessFactory()).getNewDBAccess();
       dbDriver.loadDriver();
-    
+
       theCon  = DriverManager.getConnection
-                  ( dbDriver.urlOfDatabase(), 
-                    dbDriver.username(), 
+                  ( dbDriver.urlOfDatabase(),
+                    dbDriver.username(),
                     dbDriver.password() );
 
       theStmt = theCon.createStatement();
@@ -66,7 +68,7 @@ public class StockR implements StockReader
    * Returns a statement object that is used to process SQL statements
    * @return A statement object used to access the database
    */
-  
+
   protected Statement getStatementObject()
   {
     return theStmt;
@@ -91,7 +93,7 @@ public class StockR implements StockReader
   public synchronized boolean exists( String pNum )
          throws StockException
   {
-    
+
     try
     {
       ResultSet rs   = getStatementObject().executeQuery(
@@ -99,7 +101,7 @@ public class StockR implements StockReader
         "  where  ProductTable.productNo = '" + pNum + "'"
       );
       boolean res = rs.next();
-      DEBUG.trace( "DB StockR: exists(%s) -> %s", 
+      DEBUG.trace( "DB StockR: exists(%s) -> %s",
                     pNum, ( res ? "T" : "F" ) );
       return res;
     } catch ( SQLException e )
@@ -150,14 +152,14 @@ public class StockR implements StockReader
   public synchronized ImageIcon getImage( String pNum )
          throws StockException
   {
-    String filename = "default.jpg";  
+    String filename = "default.jpg";
     try
     {
       ResultSet rs   = getStatementObject().executeQuery(
         "select picture from ProductTable " +
         "  where  ProductTable.productNo = '" + pNum + "'"
       );
-      
+
       boolean res = rs.next();
       if ( res )
         filename = rs.getString( "picture" );
@@ -167,9 +169,35 @@ public class StockR implements StockReader
       DEBUG.error( "getImage()\n%s\n", e.getMessage() );
       throw new StockException( "SQL getImage: " + e.getMessage() );
     }
-    
+
     //DEBUG.trace( "DB StockR: getImage -> %s", filename );
     return new ImageIcon( filename );
   }
 
+  public synchronized List<Product> getAllProducts() throws StockException {
+    List<Product> productList = new ArrayList<Product>();
+
+    try {
+      String query =  "SELECT p.productNo, p.description, p.price, s.stockLevel " +
+                      "FROM ProductTable AS p " +
+                      "JOIN StockTable s ON p.productNo = s.productNo ";
+
+      ResultSet rs = getStatementObject().executeQuery(query);
+
+      while (rs.next()) {
+
+        String productNum = rs.getString("productNo");
+        String description = rs.getString("description");
+        double price = rs.getDouble("price");
+        int stockLevel = rs.getInt("stockLevel");
+
+        Product product = new Product( productNum, description, price, stockLevel );
+        productList.add(product);
+      }
+      rs.close();
+    } catch ( SQLException e ) {
+      throw new StockException( "SQL error getAllProducts: " + e.getMessage() );
+    }
+    return productList;
+  }
 }

@@ -1,5 +1,6 @@
 package catalogue;
 
+import javax.swing.*;
 import java.io.Serializable;
 
 /**
@@ -58,4 +59,7 @@ public class Product implements Serializable
     theQuantity = aQuantity;
   }
 
+  public ImageIcon getImage() {
+    return new ImageIcon("images/" + theProductNum + ".gif");
+  }
 }

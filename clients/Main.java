@@ -6,14 +6,16 @@ import clients.backDoor.BackDoorView;
 import clients.cashier.CashierController;
 import clients.cashier.CashierModel;
 import clients.cashier.CashierView;
-import clients.customer.CustomerController;
-import clients.customer.CustomerModel;
-import clients.customer.CustomerView;
+import clients.customer.CatalogueController;
+import clients.customer.CatalogueModel;
+import clients.customer.CatalogueView;
 import clients.packing.PackingController;
 import clients.packing.PackingModel;
 import clients.packing.PackingView;
 import middle.LocalMiddleFactory;
 import middle.MiddleFactory;
+import middle.StockException;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -48,6 +50,7 @@ class Main
     menuWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     menuWindow.setSize(700, 900);
     menuWindow.setLayout(new GridLayout(5, 1));
+    menuWindow.setBackground(Style.BACKGROUND_COLOR);
 
     JButton customerButton = new JButton("Catalogue Client");
     JButton cashierButton = new JButton("Cashier Client");
@@ -62,7 +65,19 @@ class Main
     backDoorButton.setFont(buttonFont);
     exitButton.setFont(buttonFont);
 
-    customerButton.addActionListener( e -> startCustomerGUI_MVC( mlf ) );
+    Style.styleButton(customerButton);
+    Style.styleButton(cashierButton);
+    Style.styleButton(packingButton);
+    Style.styleButton(backDoorButton);
+    Style.styleButton(exitButton);
+
+    customerButton.addActionListener( e -> {
+        try {
+            startCustomerGUI_MVC( mlf );
+        } catch (StockException ex) {
+            throw new RuntimeException(ex);
+        }
+    });
     cashierButton.addActionListener( e -> cashierLogIn( mlf ) );
     packingButton.addActionListener( e -> warehouseLogIn( mlf ) );
     backDoorButton.addActionListener( e -> managerLogIn( mlf ) );
@@ -90,6 +105,7 @@ class Main
     JPasswordField passwordField = new JPasswordField();
 
     logInWindow.setLayout(null);
+    logInWindow.getContentPane().setBackground(Style.BACKGROUND_COLOR);
 
     Font labelFont = new Font("", Font.BOLD, 30);
     usernameLabel.setFont(labelFont);
@@ -101,6 +117,11 @@ class Main
     passwordField.setBounds(200, 170, 350, 40);
     logInButton.setBounds(40, 450, 500, 100);
     cancelButton.setBounds(40, 340, 500, 100);
+
+    Style.styleButton(logInButton);
+    Style.styleButton(cancelButton);
+    Style.styleTextField(usernameField);
+    Style.styleTextField(passwordField);
 
     logInButton.addActionListener( e -> {
       String username = usernameField.getText();
@@ -145,6 +166,7 @@ class Main
     JPasswordField passwordField = new JPasswordField();
 
     logInWindow.setLayout(null);
+    logInWindow.getContentPane().setBackground(Style.BACKGROUND_COLOR);
 
     Font labelFont = new Font("", Font.BOLD, 30);
     usernameLabel.setFont(labelFont);
@@ -156,6 +178,11 @@ class Main
     passwordField.setBounds(200, 170, 350, 40);
     logInButton.setBounds(40, 450, 500, 100);
     cancelButton.setBounds(40, 340, 500, 100);
+
+    Style.styleButton(logInButton);
+    Style.styleButton(cancelButton);
+    Style.styleTextField(usernameField);
+    Style.styleTextField(passwordField);
 
     logInButton.addActionListener( e -> {
       String username = usernameField.getText();
@@ -200,6 +227,7 @@ class Main
     JPasswordField passwordField = new JPasswordField();
 
     logInWindow.setLayout(null);
+    logInWindow.getContentPane().setBackground(Style.BACKGROUND_COLOR);
 
     Font labelFont = new Font("", Font.BOLD, 30);
     usernameLabel.setFont(labelFont);
@@ -211,6 +239,11 @@ class Main
     passwordField.setBounds(200, 170, 350, 40);
     logInButton.setBounds(40, 450, 500, 100);
     cancelButton.setBounds(40, 340, 500, 100);
+
+    Style.styleButton(logInButton);
+    Style.styleButton(cancelButton);
+    Style.styleTextField(usernameField);
+    Style.styleTextField(passwordField);
 
     logInButton.addActionListener( e -> {
       String username = usernameField.getText();
@@ -247,15 +280,14 @@ class Main
   * start the Customer client, -search product
   * @param mlf A factory to create objects to access the stock list
   */
-  public void startCustomerGUI_MVC(MiddleFactory mlf )
-  {
+  public void startCustomerGUI_MVC(MiddleFactory mlf ) throws StockException {
     JFrame  window = new JFrame();
     window.setTitle( "Customer Client MVC");
     Dimension pos = PosOnScrn.getPos();
     
-    CustomerModel model      = new CustomerModel(mlf);
-    CustomerView view        = new CustomerView( window, mlf, pos.width, pos.height );
-    CustomerController cont  = new CustomerController( model, view );
+    CatalogueModel model      = new CatalogueModel(mlf);
+    CatalogueView view        = new CatalogueView( window, mlf, pos.width, pos.height );
+    CatalogueController cont  = new CatalogueController( model, view );
     view.setController( cont );
 
     model.addObserver( view );       // Add observer to the model, ---view is observer, model is Observable
@@ -280,6 +312,7 @@ class Main
     model.addObserver( view );       // Add observer to the model
     window.setVisible(true);         // Make window visible
     model.askForUpdate();            // Initial display
+
   }
 
   /**

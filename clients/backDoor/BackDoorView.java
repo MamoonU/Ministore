@@ -1,5 +1,6 @@
 package clients.backDoor;
 
+import clients.Style;
 import middle.MiddleFactory;
 import middle.StockReadWriter;
 
@@ -41,8 +42,7 @@ public class BackDoorView implements Observer
    * @param x     x-cordinate of position of window on screen 
    * @param y     y-cordinate of position of window on screen  
    */
-  public BackDoorView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y )
-  {
+  public BackDoorView(  RootPaneContainer rpc, MiddleFactory mf, int x, int y ) {
     try                                             // 
     {      
       theStock = mf.makeStockReadWriter();          // Database access
@@ -55,8 +55,16 @@ public class BackDoorView implements Observer
     cp.setLayout(null);                             // No layout manager
     rootWindow.setSize( W, H );                     // Size of Window
     rootWindow.setLocation( x, y );
+
+    cp.setBackground(Style.BACKGROUND_COLOR);
     
     Font f = new Font("Monospaced",Font.PLAIN,12);  // Font f is
+
+    Style.styleButton(theBtQuery);
+    Style.styleButton(theBtClear);
+    Style.styleButton(theBtRStock);
+    Style.styleTextField(theInput);
+    Style.styleTextField(theInputNo);
 
     pageTitle.setBounds( 110, 0 , 270, 20 );       
     pageTitle.setText( "Staff check and manage stock" );                        
